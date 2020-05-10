@@ -118,7 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // ToDo: Fixa så att innehållet i den här kolumnen ligger längst upp på skärmen
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
               'Antal tärningar:',
@@ -126,6 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+                // Minus-knapp
                 FloatingActionButton(
                   onPressed: _decrementCounter,
                   tooltip: 'Minska',
@@ -135,6 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   '$_counter',
                   style: Theme.of(context).textTheme.headline4,
                 ),
+                // Plus-knapp
                 FloatingActionButton(
                   onPressed: _incrementCounter,
                   tooltip: 'Öka',
