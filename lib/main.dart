@@ -52,9 +52,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _counter = 2;
   var diceResult = List<Widget>();
   var diceBag = new Random();
+//  List<String> possibleRolls = ["?", "\u{2680}", "\u{2681}", "\u{2682}",
+//    "\u{26803}", "\u{2684}", "\u{2685}"];
 
   void _incrementCounter() {
     setState(() {
@@ -91,12 +93,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _addDice(List<Widget> result, int level) {
     int diceResult = 1+diceBag.nextInt(6);
-    //String possibleRolls = "u{2680}u{2681}u{2682}u{26803}u{2684}u{2685}";
     if (diceResult == 6) {
       result.add(Text("➤"*level + "("+diceResult.toString() + ")"));
+//      result.add(Text("➤"*level + "("+possibleRolls[diceResult] + ")"));
       diceResult = _addDice(result, level+1)+_addDice(result, level+1);
     }  else {
       result.add(Text("➤"*level + diceResult.toString()));
+//      result.add(Text("➤"*level + possibleRolls[diceResult]));
     }
     return diceResult;
   }
