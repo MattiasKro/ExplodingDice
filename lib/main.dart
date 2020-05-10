@@ -80,9 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
       int diceTotal = 0;
       diceResult.clear();
       for (int i=0; i<_counter; i++) {
-        int thisDice = _addDice(0);
-        diceTotal += thisDice;
-        diceResult.add(Text(thisDice.toString()));
+        diceTotal = _addDice(diceResult, 0);
       }
       diceResult.add(Text(
           "Totalt: "+diceTotal.toString(), 
@@ -91,12 +89,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  int _addDice(int level) {
+  int _addDice(List<Widget> result, int level) {
     int diceResult = 1+diceBag.nextInt(6);
-    //String dieResults = "u{2680}u{2681}u{2682}u{26803}u{2684}u{2685}";
+    //String possibleRolls = "u{2680}u{2681}u{2682}u{26803}u{2684}u{2685}";
     if (diceResult == 6) {
-      diceResult = _addDice(level+1)+_addDice(level+1);
-    }  
+      result.add(Text("➤"*level + "("+diceResult.toString() + ")"));
+      diceResult = _addDice(result, level+1)+_addDice(result, level+1);
+    }  else {
+      result.add(Text("➤"*level + diceResult.toString()));
+    }
     return diceResult;
   }
 
@@ -123,6 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               'Antal tärningar:',
+              style: TextStyle(fontSize: 20.0),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
