@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
       int diceTotal = 0;
       diceResult.clear();
       for (int i=0; i<_counter; i++) {
-        diceTotal = _addDice(diceResult, 0);
+        diceTotal += _addDice(diceResult, 0);
       }
       diceResult.add(Text(
           "Totalt: "+diceTotal.toString(), 
