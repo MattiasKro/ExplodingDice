@@ -73,7 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
       for (int i=0; i<_counter; i++) {
         diceTotal += _addDice(diceResult, 0);
       }
-      diceResult.add(
+      diceResult.insert(
+        0,
         Text(
           "Totalt: "+diceTotal.toString(), 
           style: TextStyle(
