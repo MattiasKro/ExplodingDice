@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Exploding Dice',
       theme: ThemeData(
         primarySwatch: mainStyle,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -44,8 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 2;
   var diceResult = List<Widget>();
   var diceBag = new Random();
-//  List<String> possibleRolls = ["?", "\u{2680}", "\u{2681}", "\u{2682}",
-//    "\u{26803}", "\u{2684}", "\u{2685}"];
+  String possibleRolls = "⚀⚁⚂⚃⚄⚅";
 
   void _incrementCounter() {
     setState(() {
@@ -74,9 +73,14 @@ class _MyHomePageState extends State<MyHomePage> {
       for (int i=0; i<_counter; i++) {
         diceTotal += _addDice(diceResult, 0);
       }
-      diceResult.add(Text(
+      diceResult.add(
+        Text(
           "Totalt: "+diceTotal.toString(), 
-          style: TextStyle(fontSize: 20.0),),
+          style: TextStyle(
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       );
     });
   }
@@ -84,12 +88,19 @@ class _MyHomePageState extends State<MyHomePage> {
   int _addDice(List<Widget> result, int level) {
     int diceResult = 1+diceBag.nextInt(6);
     if (diceResult == 6) {
-      result.add(Text("➤"*level + " " + diceResult.toString() + "💥"));
-//      result.add(Text("➤"*level + "("+possibleRolls[diceResult] + ")"));
+      result.add(
+        Text("➣"*level + " " + possibleRolls[diceResult-1] + " 💥",
+          style: TextStyle(fontSize: 30.0),
+        ),
+      );
+      // Roll two new dice instead on this one
       diceResult = _addDice(result, level+1)+_addDice(result, level+1);
     }  else {
-      result.add(Text("➤"*level + " " + diceResult.toString()));
-//      result.add(Text("➤"*level + possibleRolls[diceResult]));
+      result.add(
+        Text("➣"*level + " " + possibleRolls[diceResult-1],
+          style: TextStyle(fontSize: 30.0),
+        ),
+      );
     }
     return diceResult;
   }
@@ -108,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center (
+      body: SingleChildScrollView (
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
