@@ -6,26 +6,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  Color mainStyle = Colors.blueGrey;
+  static Color mainStyle = Colors.lightGreen;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: mainStyle,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Exploding Dice! 💥🎲'),
@@ -52,6 +40,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // We start at 2 dice, since that's the minimum to use for any skill
   int _counter = 2;
   var diceResult = List<Widget>();
   var diceBag = new Random();
@@ -60,19 +49,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
+      // Always clear out the last roll when changing dice
+      diceResult.clear();
     });
   }
 
   void _decrementCounter() {
     setState(() {
       if (_counter > 0) {
+        // Only decrease down to 0
         _counter--;
+      // Always clear out the last roll when changing dice
+        diceResult.clear();
       }
     });
   }
@@ -80,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _rollDice() {
     setState(() {
       int diceTotal = 0;
+      // Clear out the last roll
       diceResult.clear();
       for (int i=0; i<_counter; i++) {
         diceTotal += _addDice(diceResult, 0);
@@ -94,11 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int _addDice(List<Widget> result, int level) {
     int diceResult = 1+diceBag.nextInt(6);
     if (diceResult == 6) {
-      result.add(Text("➤"*level + "("+diceResult.toString() + ")"));
+      result.add(Text("➤"*level + " " + diceResult.toString() + "💥"));
 //      result.add(Text("➤"*level + "("+possibleRolls[diceResult] + ")"));
       diceResult = _addDice(result, level+1)+_addDice(result, level+1);
     }  else {
-      result.add(Text("➤"*level + diceResult.toString()));
+      result.add(Text("➤"*level + " " + diceResult.toString()));
 //      result.add(Text("➤"*level + possibleRolls[diceResult]));
     }
     return diceResult;
@@ -122,12 +112,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // ToDo: Fixa så att innehållet i den här kolumnen ligger längst upp på skärmen
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Antal tärningar:',
-              style: TextStyle(fontSize: 20.0),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                'Antal tärningar:',
+                style: TextStyle(fontSize: 20.0),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -151,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ], 
             ), 
             FlatButton(
-              color: Colors.blueGrey,
+              color: Colors.green,
               textColor: Colors.white,
               padding: EdgeInsets.all(8.0),
               splashColor: Colors.blueAccent,
@@ -161,7 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontSize: 20.0),
               ),
             ), 
-            Column(children: diceResult,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: diceResult,),
           ],
         ),
       ),
